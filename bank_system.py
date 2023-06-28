@@ -46,12 +46,16 @@ def update_balance(amount):
         for row in sheet.iter_rows(min_row=2, values_only=True):
             if str(row[2]) == current_user:
                 new_balance = row[5] + amount
-                row[5] = new_balance
+                row_list = list(row)  # Convert tuple to list
+                row_list[5] = new_balance  # Modify the element
+                updated_row = tuple(row_list)  # Convert back to tuple
+                sheet.append(updated_row)  # Append the updated row
 
         workbook.save('database/customers.xlsx')
         workbook.close()
     except FileNotFoundError:
         messagebox.showerror("Error", "Data file not found.")
+
 
 def validate_withdrawal(amount):
     try:
